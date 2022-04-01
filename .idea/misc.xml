@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Data/Workspace/Android/NoticeAppManager/app/src/main/res/drawable/background_grab.xml" value="0.7625" />
+        <entry key="..\:/Data/Workspace/Android/NoticeAppManager/app/src/main/res/drawable/button_round.xml" value="0.305" />
+        <entry key="..\:/Data/Workspace/Android/NoticeAppManager/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Data/Workspace/Android/NoticeAppManager/app/src/main/res/layout/card_view_show_package_and_setup_layout.xml" value="0.3840155945419103" />
+        <entry key="..\:/Data/Workspace/Android/NoticeAppManager/app/src/main/res/layout/card_view_show_package_layout.xml" value="0.2" />
+        <entry key="..\:/Data/Workspace/Android/NoticeAppManager/app/src/main/res/layout/content_main.xml" value="0.209375" />
+        <entry key="..\:/Data/Workspace/Android/NoticeAppManager/app/src/main/res/layout/fragment_first.xml" value="0.2601010101010101" />
+        <entry key="..\:/Data/Workspace/Android/NoticeAppManager/app/src/main/res/layout/fragment_popup.xml" value="0.33" />
+        <entry key="..\:/Data/Workspace/Android/NoticeAppManager/app/src/main/res/layout/fragment_second.xml" value="0.209375" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
