@@ -6,7 +6,7 @@
     <data>
         <variable
             name="item"
-            type="com.example.noticeappmanager.enity.ItemPackage" />
+            type="com.kamestudio.noticeappmanager.enity.ItemPackage" />
     </data>
 
     <LinearLayout

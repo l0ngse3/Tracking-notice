@@ -45,17 +45,17 @@
             android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button_stop_notify"
+            app:layout_constraintEnd_toStartOf="@+id/button_setting_notify"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/button_start_service"
             app:layout_constraintVertical_weight="1" />
 
         <Button
-            android:id="@+id/button_stop_notify"
+            android:id="@+id/button_setting_notify"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="48dp"
-            android:text="Stop notify"
+            android:text="Settings"
             android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
