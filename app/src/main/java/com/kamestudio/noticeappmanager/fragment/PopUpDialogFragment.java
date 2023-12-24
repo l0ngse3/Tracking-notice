@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PopUpDialogFragment extends DialogFragment implements Util {
-
+    private static final String TAG = "PopUpDialogFragment";
     PackageAdapter packageAdapter = new PackageAdapter();
     List<ItemPackage> itemPackageFullList = new ArrayList<>();
     List<ItemPackage> itemPackageListView = new ArrayList<>();
@@ -72,20 +72,20 @@ public class PopUpDialogFragment extends DialogFragment implements Util {
                         List<ItemPackage> viewModelData = viewModel.getListMutableLiveData().getValue();
 
                         for (ItemPackage item : packageAdapter.getItemPackageList()) {
-                            if (item.isChoosen()) {
+                            if (item.isChosen()) {
                                 choosenList.add(item);
                             }
                         }
 
                         for (ItemPackage item : packageAdapter.getItemPackageFullList()) {
-                            if (item.isChoosen() && !choosenList.contains(item)) {
+                            if (item.isChosen() && !choosenList.contains(item)) {
                                 choosenList.add(item);
                             }
                         }
 
                         for (ItemPackage item : viewModelData) {
                             for (ItemPackage item1 : choosenList) {
-                                if (item.getPackageInfo().packageName.equals(item1.getPackageInfo().packageName)) {
+                                if (item.getPackageInfoName().equals(item1.getPackageInfoName())) {
                                     item1.setTurnOn(item.isTurnOn());
                                     item1.setSoundPath(item.getSoundPath());
                                 }
@@ -126,12 +126,12 @@ public class PopUpDialogFragment extends DialogFragment implements Util {
         for (PackageInfo item : packageInfoList) {
             boolean isChoosen = false;
             for (ItemPackage itemPackage : choosenPackage) {
-                if (itemPackage.getPackageInfo().packageName.equals(item.packageName)) {
+                if (itemPackage.getPackageInfoName().equals(item.packageName)) {
                     isChoosen = true;
                 }
             }
-            itemPackageListView.add(new ItemPackage(item, isChoosen));
-            itemPackageFullList.add(new ItemPackage(item, isChoosen));
+            itemPackageListView.add(new ItemPackage(item.packageName, isChoosen));
+            itemPackageFullList.add(new ItemPackage(item.packageName, isChoosen));
         }
         packageAdapter.setPackageInfoArrayList(itemPackageFullList);
 

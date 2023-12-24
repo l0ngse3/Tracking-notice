@@ -2,15 +2,24 @@ package com.kamestudio.noticeappmanager.enity;
 
 import android.content.pm.PackageInfo;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+
+import java.lang.reflect.Type;
+
 public class ItemPackage {
-    PackageInfo packageInfo;
-    boolean isChoosen;
+    String packageInfoName;
+    boolean isChosen;
     String soundPath = "";
     boolean isTurnOn;
 
-    public ItemPackage(PackageInfo packageInfo, boolean isChoosen) {
-        this.packageInfo = packageInfo;
-        this.isChoosen = isChoosen;
+    public ItemPackage(String packageInfoName, boolean isChosen) {
+        this.packageInfoName = packageInfoName;
+        this.isChosen = isChosen;
         soundPath = "";
     }
 
@@ -30,20 +39,20 @@ public class ItemPackage {
         this.soundPath = soundPath;
     }
 
-    public PackageInfo getPackageInfo() {
-        return packageInfo;
+    public String getPackageInfoName() {
+        return packageInfoName;
     }
 
-    public void setPackageInfo(PackageInfo packageInfo) {
-        this.packageInfo = packageInfo;
+    public void setPackageInfo(String packageInfoName) {
+        this.packageInfoName = packageInfoName;
     }
 
-    public boolean isChoosen() {
-        return isChoosen;
+    public boolean isChosen() {
+        return isChosen;
     }
 
-    public void setChoosen(boolean choosen) {
-        isChoosen = choosen;
+    public void setChosen(boolean chosen) {
+        isChosen = chosen;
     }
 
     @Override
@@ -52,11 +61,11 @@ public class ItemPackage {
         if (o == null || getClass() != o.getClass()) return false;
         ItemPackage that = (ItemPackage) o;
 
-        if (!packageInfo.packageName.equals(that.packageInfo.packageName)) {
+        if (!packageInfoName.equals(that.packageInfoName)) {
             return false;
         }
 
-        if (isChoosen != that.isChoosen) {
+        if (isChosen != that.isChosen) {
             return false;
         }
 
@@ -69,5 +78,5 @@ public class ItemPackage {
         }
         return true;
     }
-
 }
+

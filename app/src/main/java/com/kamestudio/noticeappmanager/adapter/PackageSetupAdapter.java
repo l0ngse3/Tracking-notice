@@ -77,7 +77,7 @@ public class PackageSetupAdapter extends ListAdapter<ItemPackage, SetupViewHolde
                                 currentPosition = holder.getAdapterPosition();
                                 viewModel.setCurrentPosition(currentPosition);
                                 Log.d("Notify App", "onClick: Select content");
-                                Toast.makeText(mFragment.getContext(), "Select content", Toast.LENGTH_LONG).show();
+//                                Toast.makeText(mFragment.getContext(), "Select content", Toast.LENGTH_LONG).show();
                                 break;
 
                             case R.id.soundSwitch:

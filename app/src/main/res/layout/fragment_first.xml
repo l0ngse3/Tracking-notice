@@ -3,10 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background_grab"
+        android:orientation="vertical"
         tools:context=".FirstFragment">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -15,52 +16,55 @@
             android:layout_height="0dp"
             android:layout_margin="16dp"
             android:text="@string/hello_first_fragment"
-            app:layout_constraintBottom_toTopOf="@id/button_start_service"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_weight="4" />
+            android:layout_weight="82"/>
+<!--            app:layout_constraintBottom_toTopOf="@id/button_start_service"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintVertical_weight="4" -->
 
-        <Button
-            android:id="@+id/button_start_service"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="48dp"
-            android:text="Start service"
-            android:textAllCaps="false"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button_stop_service"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/packageRecyclerView"
-            app:layout_constraintVertical_weight="1" />
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="8">
+            <Button
+                android:id="@+id/button_start_service"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Start"
+                android:textAllCaps="false"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="8dp"
+                android:layout_weight="1"/>
 
-        <Button
-            android:id="@+id/button_stop_service"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="48dp"
-            android:text="Stop service"
-            android:textAllCaps="false"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button_setting_notify"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/button_start_service"
-            app:layout_constraintVertical_weight="1" />
+            <Button
+                android:id="@+id/button_stop_service"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Stop"
+                android:textAllCaps="false"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"/>
 
-        <Button
-            android:id="@+id/button_setting_notify"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="48dp"
-            android:text="Settings"
-            android:textAllCaps="false"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/button_stop_service"
-            app:layout_constraintVertical_weight="1" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:id="@+id/button_setting_notify"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Settings"
+                android:textAllCaps="false"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="8dp"
+                android:layout_weight="1"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <FrameLayout
+            android:id="@+id/ad_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="10">
+        </FrameLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

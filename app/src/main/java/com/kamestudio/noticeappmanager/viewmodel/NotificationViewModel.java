@@ -35,14 +35,11 @@ public class NotificationViewModel extends ViewModel {
     }
 
     public MutableLiveData<List<ItemPackage>> getListMutableLiveData() {
-        if (listMutableLiveData.getValue() == null) {
-            listMutableLiveData.postValue(new ArrayList<>());
-        }
         return listMutableLiveData;
     }
 
     public void setListMutableLiveData(List<ItemPackage> listIem) {
         this.listMutableLiveData.postValue(listIem);
-        this.listMutableLiveData.setValue(listIem);
+//        this.listMutableLiveData.setValue(listIem);
     }
 }

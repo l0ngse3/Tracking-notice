@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.ServiceCompat;
 
 import com.kamestudio.noticeappmanager.MainActivity;
 import com.kamestudio.noticeappmanager.R;
@@ -34,8 +35,10 @@ import java.io.File;
 import java.util.List;
 
 public class NoticeService extends NotificationListenerService implements Util {
+    private static final String TAG = "NoticeService";
     public static String APP_PACKAGE_NAME = "com.kamestudio.noticeappmanager";
     public static String MAIN_CHANNEL = "Notice manager";
+    public static boolean IS_RUNNING = false;
     private List<ItemPackage> packageListChoosen;
     private NotificationManager manager;
 
@@ -74,9 +77,12 @@ public class NoticeService extends NotificationListenerService implements Util {
         Log.d(TAG, "onNotificationPosted: " + notificationPackageName);
         if (!notificationPackageName.equals(APP_PACKAGE_NAME)) {
             ItemPackage itemPackage = isPackageChoosen(notificationPackageName);
+//            ItemPackage itemPackage = new ItemPackage("", true);
 
             if (itemPackage != null) {
                 isStopSubChannel = false;
+                // com.google.android.apps.messaging
+                // com.google.android.dialer
 
                 if (mediaPlayer == null) {
 //                    mediaPlayer = MediaPlayer.create(this, R.raw.sound);
@@ -101,10 +107,10 @@ public class NoticeService extends NotificationListenerService implements Util {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+
     public void startCustomForeground() {
         Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_MUTABLE);
 
         serviceChannel = new NotificationChannel(MAIN_CHANNEL, channelNameMain, NotificationManager.IMPORTANCE_HIGH);
         serviceChannel.setLightColor(Color.BLUE);
@@ -124,19 +130,26 @@ public class NoticeService extends NotificationListenerService implements Util {
                 .setAutoCancel(false)
                 .build();
         //manager.notify(FOREGROUND_CHANNEL_ID, notification);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            startForeground(FOREGROUND_CHANNEL_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK);
-        }
-        else{
-            startForeground(FOREGROUND_CHANNEL_ID, notification);
-        }
+        ServiceCompat.startForeground(this,
+                FOREGROUND_CHANNEL_ID,
+                notification,
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
+        );
+        IS_RUNNING = true;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String APP_PACKAGE_NAME = getApplicationContext().getString(R.string.app_package_name);
-        startNotificationService(APP_PACKAGE_NAME);
-        return START_NOT_STICKY;
+        String action = intent.getAction();
+        if (action.equals(FOREGROUND_START_ACTION)){
+            String APP_PACKAGE_NAME = getApplicationContext().getString(R.string.app_package_name);
+            startNotificationService(APP_PACKAGE_NAME);
+            IS_RUNNING = true;
+        }
+        else{
+            onDestroy();
+        }
+        return START_REDELIVER_INTENT;
     }
 
     @Override
@@ -172,7 +185,7 @@ public class NoticeService extends NotificationListenerService implements Util {
     private ItemPackage isPackageChoosen(String pkg) {
         ItemPackage returnItem = null;
         for (ItemPackage item : packageListChoosen) {
-            if (pkg.equals(item.getPackageInfo().packageName) && item.isTurnOn()) {
+            if (pkg.equals(item.getPackageInfoName()) && item.isTurnOn()) {
                 returnItem = item;
                 break;
             }
@@ -190,6 +203,7 @@ public class NoticeService extends NotificationListenerService implements Util {
         stopForeground(true);
         stopSelf();
         EventBus.getDefault().unregister(this);
+        IS_RUNNING = false;
         super.onDestroy();
     }
 
@@ -197,7 +211,7 @@ public class NoticeService extends NotificationListenerService implements Util {
     public void handleEvent(MessageEvent event) {
         Log.d(TAG, "handleEvent: " + event.message);
         if (event.message.equals(ACTION_STOP_SERVICE)) {
-            stopForeground(true);
+            ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE);
             onDestroy();
         } else if (event.message.equals(ACTION_STOP_SOUND)) {
             if (mediaPlayer != null) {

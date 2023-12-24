@@ -77,14 +77,14 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.ViewHold
                 String filterPattern = charSequence.toString().toLowerCase().trim();
 
                 for (ItemPackage item : itemPackageList) {
-                    if (item.getPackageInfo().packageName.toLowerCase().contains(filterPattern)) {
+                    if (item.getPackageInfoName().toLowerCase().contains(filterPattern)) {
                         filterList.add(item);
                     }
                 }
 
                 if (filterList.size() == 0) {
                     for (ItemPackage item : itemPackageFullList) {
-                        if (item.getPackageInfo().packageName.toLowerCase().contains(filterPattern)) {
+                        if (item.getPackageInfoName().toLowerCase().contains(filterPattern)) {
                             filterList.add(item);
                         }
                     }
@@ -135,7 +135,7 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.ViewHold
                     process();
                     int position = this.getAdapterPosition();
                     Log.d("Notify App", "On click at " + position + " -- checkbox: " + binding.packageCheckBox.isChecked());
-                    itemPackageList.get(position).setChoosen(!itemPackageList.get(position).isChoosen());
+                    itemPackageList.get(position).setChosen(!itemPackageList.get(position).isChosen());
                     notifyItemChanged(position);
                     //itemPackageFullList.get(position).setChoosen(itemPackageList.get(position).isChoosen());
                     break;

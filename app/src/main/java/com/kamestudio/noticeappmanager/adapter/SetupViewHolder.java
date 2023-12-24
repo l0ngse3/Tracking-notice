@@ -1,6 +1,7 @@
 package com.kamestudio.noticeappmanager.adapter;
 
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,10 +30,15 @@ public class SetupViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(ItemPackage itemPackage, View.OnClickListener onClick) {
-        PackageInfo packageInfo = itemPackage.getPackageInfo();
-        Drawable icon = packageInfo.applicationInfo.loadIcon(binding.getRoot().getContext().getPackageManager());
+        String packageInfoName = itemPackage.getPackageInfoName();
+        Drawable icon = null;
+        try {
+            icon = binding.getRoot().getContext().getPackageManager().getApplicationIcon(packageInfoName);
+        } catch (PackageManager.NameNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         binding.packageImageView.setImageDrawable(icon);
-        binding.packageTextView.setText(packageInfo.packageName);
+        binding.packageTextView.setText(packageInfoName);
 
         if (itemPackage.getSoundPath() != null) {
             if (itemPackage.getSoundPath().length() > 0) {

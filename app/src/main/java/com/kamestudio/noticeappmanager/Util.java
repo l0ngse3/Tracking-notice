@@ -16,7 +16,9 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 
 public interface Util {
-    public static String TAG = "Notify App";
+//    public String TAG = "Notify App";
+    public static String FOREGROUND_STOP_ACTION = "STOP";
+    public static String FOREGROUND_START_ACTION = "START";
 
     public static String getRealPathFromURI(final Context context, final Uri uri) {
         String path = "";
