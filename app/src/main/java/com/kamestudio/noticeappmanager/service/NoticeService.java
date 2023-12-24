@@ -126,7 +126,7 @@ public class NoticeService extends NotificationListenerService implements Util {
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationManager.IMPORTANCE_HIGH)
                 .setCategory(Notification.CATEGORY_SYSTEM)
-                .setSmallIcon(R.drawable.ic_baseline_android_24)
+                .setSmallIcon(R.drawable.icon_app)
                 .setAutoCancel(false)
                 .build();
         //manager.notify(FOREGROUND_CHANNEL_ID, notification);

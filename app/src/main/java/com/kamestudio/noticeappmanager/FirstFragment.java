@@ -51,7 +51,7 @@ public class FirstFragment extends Fragment implements Util{
 
 
     // Ads config
-    private static final String AD_UNIT_ID = "ca-app-pub-3940256099942544/6300978111";
+    private static String AD_UNIT_ID = "";
     private GoogleMobileAdsConsentManager googleMobileAdsConsentManager;
     private AdView adView;
     private FrameLayout adContainerView;
@@ -64,6 +64,7 @@ public class FirstFragment extends Fragment implements Util{
             Bundle savedInstanceState
     ) {
         binding = FragmentFirstBinding.inflate(inflater, container, false);
+        AD_UNIT_ID = getResources().getString(R.string.AD_UNIT_ID_TEST);
         adsConfigSettings();
         return binding.getRoot();
     }

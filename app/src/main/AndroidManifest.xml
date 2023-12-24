@@ -8,7 +8,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission android:name="com.google.android.gms.permission.ca-app-pub-7988059402381621~3694261524"/>
-<!--    <uses-permission android:name="com.google.android.gms.permission.ca-app-pub-3940256099942544/9214589741"/>-->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -22,11 +21,7 @@
 <!--       App sample ID-->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713"/>
-
-<!--        <meta-data-->
-<!--            android:name="com.google.android.gms.ads.APPLICATION_ID"-->
-<!--            android:value="ca-app-pub-3940256099942544~3347511713"/>-->
+            android:value="ca-app-pub-7988059402381621~3694261524"/>
 
         <activity
             android:name="com.kamestudio.noticeappmanager.MainActivity"
