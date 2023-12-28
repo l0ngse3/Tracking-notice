@@ -1,10 +1,13 @@
 package com.kamestudio.noticeappmanager.service;
 
+import static com.kamestudio.noticeappmanager.receiver.PeriodicReceiver.ACTION;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ServiceInfo;
 import android.graphics.Color;
 import android.media.MediaPlayer;
@@ -55,6 +58,7 @@ public class NoticeService extends NotificationListenerService implements Util {
     public static String ACTION_START_SERVICE = "com.noticeappmanager.ACTION_START";
     public boolean isStopSubChannel = true;
     MediaPlayer mediaPlayer;
+    private PeriodicReceiver periodicReceiver = null;
 
     @Override
     public void onCreate() {
@@ -203,12 +207,13 @@ public class NoticeService extends NotificationListenerService implements Util {
         stopSelf();
         EventBus.getDefault().unregister(this);
 
-        // reschedule service if it still running
-        if (Util.isServiceRunning(this)){
-            // call boardcast receiver for trigger restart service
-            Intent broadcastIntent = new Intent(this, PeriodicReceiver.class);
-            sendBroadcast(broadcastIntent);
-        }
+//
+//        // reschedule service if it still running
+//        if (Util.isServiceRunning(this)){
+//            // call boardcast receiver for trigger restart service
+//            Intent broadcastIntent = new Intent(this, PeriodicReceiver.class);
+//            sendBroadcast(broadcastIntent);
+//        }
         super.onDestroy();
     }
 

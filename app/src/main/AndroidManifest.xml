@@ -47,10 +47,15 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
         <receiver
             android:name=".receiver.PeriodicReceiver"
             android:enabled="true"
-            android:exported="false"></receiver>
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.kamestudio.noticeappmanager.PeriodicReceiver" />
+            </intent-filter>
+        </receiver>
 
         <service
             android:name=".service.NoticeService"

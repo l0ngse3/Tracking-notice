@@ -19,6 +19,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -34,11 +37,13 @@ import com.kamestudio.noticeappmanager.enity.ItemPackage;
 import com.kamestudio.noticeappmanager.service.MessageEvent;
 import com.kamestudio.noticeappmanager.service.NoticeService;
 import com.kamestudio.noticeappmanager.viewmodel.NotificationViewModel;
+import com.kamestudio.noticeappmanager.worker.PeriodicWorker;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class FirstFragment extends Fragment implements Util{
@@ -55,6 +60,10 @@ public class FirstFragment extends Fragment implements Util{
     private FrameLayout adContainerView;
     private AtomicBoolean initialLayoutComplete = new AtomicBoolean(true);
     private final AtomicBoolean isMobileAdsInitializeCalled = new AtomicBoolean(false);
+
+    //work manager code
+    public static final String WORK_ENABLE = "WORK_ENABLE";
+    public static final String WORK_DISABLE = "WORK_DISABLE";
 
     @Override
     public View onCreateView(
@@ -207,6 +216,9 @@ public class FirstFragment extends Fragment implements Util{
                 getActivity().startService(intent);
                 EventBus.getDefault().post(new MessageEvent(NoticeService.ACTION_STOP_SERVICE));
                 Log.d(TAG, "onClick: buttonStopService ");
+                // cancel all periodic work
+                workManagerRequest(WORK_DISABLE);
+                // save service state to persistence storage
                 DataStoreUtil.getInstance(getActivity()).setData(NoticeService.IS_RUNNING_STATE_NAME, false+"");
             }
             catch (Exception ex){
@@ -277,15 +289,36 @@ public class FirstFragment extends Fragment implements Util{
     private void startNoticeService(){
         Intent intent = new Intent(getActivity(), NoticeService.class);
         intent.setAction(FOREGROUND_START_ACTION);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            getActivity().startForegroundService(intent);
-//            Toast.makeText(getContext(), "Start Service 1", Toast.LENGTH_SHORT).show();
-        }
-        else{
-            getActivity().startService(intent);
-//            Toast.makeText(getContext(), "Start Service 2", Toast.LENGTH_SHORT).show();
-        }
+
+        getActivity().startForegroundService(intent);
+        workManagerRequest(WORK_ENABLE);
         DataStoreUtil.getInstance(getActivity()).setData(NoticeService.IS_RUNNING_STATE_NAME, true+"");
+    }
+
+    private void workManagerRequest(String action){
+        WorkManager workManager = WorkManager.getInstance(requireActivity());
+        String workTag = "NoticeAppWorker";
+        switch (action){
+            case WORK_ENABLE:
+                // 15 minutes is minimum interval of PeriodicWorkRequest.
+                // it can not set small value. If you try with smaller than 15.
+                // it will automate rollback to default value - 15 minutes
+                PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(
+                        PeriodicWorker.class,
+                        15,
+                        TimeUnit.MINUTES)
+                        .addTag(workTag)
+                        .build();
+                workManager.enqueueUniquePeriodicWork(workTag,
+                        ExistingPeriodicWorkPolicy.KEEP,
+                        periodicWorkRequest);
+                Log.d(TAG, "Enqueue task");
+                break;
+            case WORK_DISABLE:
+                workManager.cancelAllWorkByTag(workTag);
+                Log.d(TAG, "Dequeue task");
+                break;
+        }
     }
 
 }
