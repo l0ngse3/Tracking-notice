@@ -1,5 +1,7 @@
 package com.kamestudio.noticeappmanager.receiver;
 
+import static com.kamestudio.noticeappmanager.Util.FOREGROUND_START_ACTION;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +12,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.kamestudio.noticeappmanager.Util;
+import com.kamestudio.noticeappmanager.service.NoticeService;
 import com.kamestudio.noticeappmanager.worker.PeriodicWorker;
 
 public class RestartReceiver extends BroadcastReceiver {
@@ -18,10 +21,9 @@ public class RestartReceiver extends BroadcastReceiver {
         Log.d("RestartReceiver", "RestartReceiver - onReceive: ");
         if (Util.isServiceRunning(context)) {
             // invoke periodic work manager request
-            WorkManager workManager = WorkManager.getInstance(context);
-            OneTimeWorkRequest startServiceRequest = new OneTimeWorkRequest.Builder(PeriodicWorker.class)
-                    .build();
-            workManager.enqueue(startServiceRequest);
+            Intent intentNoticeService = new Intent(context, NoticeService.class);
+            intentNoticeService.setAction(FOREGROUND_START_ACTION);
+            context.getApplicationContext().startForegroundService(intentNoticeService);
             Log.d("RestartReceiver", "Starting service ");
         } else {
             Log.d("RestartReceiver", "Service disabled");
