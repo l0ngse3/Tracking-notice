@@ -19,13 +19,18 @@ public class DataStoreUtil implements Util {
     private static final String TAG = "DataStoreUtil";
     private Context context;
     public SharedPreferences preferences;
+    private static SharedPreferences.Editor editor = null;
     public static DataStoreUtil instance = null;
     private static Gson gson = null;
+    private static String sharePreferenceName = "default";
+    private static String dataKey = "data";
 
     public static DataStoreUtil getInstance(Context context){
         if(instance == null){
             instance = new DataStoreUtil(context);
+            editor = instance.getSPEditor();
         }
+        editor = instance.getSPEditor();
         return instance;
     }
 
@@ -39,16 +44,22 @@ public class DataStoreUtil implements Util {
         return gson;
     }
 
-    private DataStoreUtil(Context _context) {
-        this.context = _context;
-        preferences = context.getSharedPreferences("default", Context.MODE_PRIVATE);
+    private SharedPreferences.Editor getSPEditor(){
+        if(preferences == null){
+            preferences = getInstance(this.context).preferences;
+        }
+        return preferences.edit();
     }
 
+    private DataStoreUtil(Context _context) {
+        this.context = _context;
+        preferences = context.getSharedPreferences(sharePreferenceName, Context.MODE_PRIVATE);
+    }
 
     public List<ItemPackage> getPackages(){
         List<ItemPackage> itemPackageList = new ArrayList<>();
         try {
-            String data_json = preferences.getString("data", "N/A");
+            String data_json = preferences.getString(dataKey, "N/A");
             if(!data_json.equals("N/A")){
                 Log.d(TAG, "getPackages: -- " + data_json);
                 Gson gson = getGsonInstance();
@@ -64,17 +75,15 @@ public class DataStoreUtil implements Util {
     }
 
     public boolean setPackages(List<ItemPackage> itemPackageList){
-        SharedPreferences.Editor editor = preferences.edit();
         Gson gson = getGsonInstance();
         Type type = new TypeToken<List<ItemPackage>>() {}.getType();
-        editor.putString("data", gson.toJson(itemPackageList, type));
+        editor.putString(dataKey, gson.toJson(itemPackageList, type));
         Log.d(TAG, "setData: "+gson.toJson(itemPackageList, type));
         Log.d(TAG, "setDataStatus: " + editor.commit());
         return true;
     }
 
     public boolean setData(String key, String data){
-        SharedPreferences.Editor editor = preferences.edit();
         Log.d(TAG, "setData: "+ key +" : " + data);
         editor.putString(key, data);
         Log.d(TAG, "setDataStatus: " + editor.commit());
@@ -82,23 +91,8 @@ public class DataStoreUtil implements Util {
     }
 
     public String getData(String key){
-        String data_json = preferences.getString(key, "N/A");
-        Log.d(TAG, "getData: "+ key +" : " + data_json);
-        return data_json;
+        String data_string = preferences.getString(key, "N/A");
+        Log.d(TAG, "getData: "+ key +" : " + data_string);
+        return data_string;
     }
-
-    public boolean setNotifyChannel(String list_channel){
-        SharedPreferences.Editor editor = preferences.edit();
-        Log.d(TAG, "setData: "+list_channel);
-        editor.putString("notify_list", list_channel);
-        editor.apply();
-        return true;
-    }
-
-    public String getNotifyChannel(){
-        String data_json = preferences.getString("notify_list", "N/A");
-        Log.d(TAG, "getNotifyChannel: -- " + data_json);
-        return data_json;
-    }
-
 }

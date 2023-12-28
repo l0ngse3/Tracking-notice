@@ -1,72 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
-    <uses-permission android:name="com.google.android.gms.permission.ca-app-pub-7988059402381621~3694261524"/>
+    <uses-permission android:name="com.google.android.gms.permission.ca-app-pub-7988059402381621~3694261524" />
+
     <application
+        android:name=".NoticeApplication"
         android:allowBackup="true"
+        android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:enableOnBackInvokedCallback="true"
-        android:theme="@style/Theme.NoticeAppManager"
-        android:name="com.kamestudio.noticeappmanager.NoticeApplication">
+        android:theme="@style/Theme.NoticeAppManager">
 
-<!--       App sample ID-->
+        <!-- App sample ID -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-7988059402381621~3694261524"/>
+            android:value="ca-app-pub-7988059402381621~3694261524" />
 
         <activity
-            android:name="com.kamestudio.noticeappmanager.MainActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
+            android:allowEmbedded="true"
+            android:resizeableActivity="true"
             android:theme="@style/Theme.NoticeAppManager.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <receiver android:name="com.kamestudio.noticeappmanager.service.RestartReceiver"
+        <receiver
+            android:name=".receiver.RestartReceiver"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-`
-        <service android:name="com.kamestudio.noticeappmanager.service.NoticeService"
-            android:label="@string/service_name"
-            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
-            android:exported="true"
+        <receiver
+            android:name=".receiver.PeriodicReceiver"
             android:enabled="true"
-            android:foregroundServiceType="mediaPlayback">
-<!--            android:process=":noticeService">-->
+            android:exported="false"></receiver>
+
+        <service
+            android:name=".service.NoticeService"
+            android:enabled="true"
+            android:exported="true"
+            android:foregroundServiceType="mediaPlayback"
+            android:label="@string/service_name"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+
+            <!-- android:process=":noticeService"> -->
 
 
-<!--            <intent-filter>-->
-<!--                <category android:name="com.example.noticeappmanager" />-->
-<!--            </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <category android:name="com.example.noticeappmanager" /> -->
+            <!-- </intent-filter> -->
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
 
             <meta-data
                 android:name="android.service.notification.default_filter_types"
-                android:value="conversations,alerting">
-            </meta-data>
+                android:value="conversations,alerting"></meta-data>
             <meta-data
                 android:name="android.service.notification.disabled_filter_types"
-                android:value="ongoing,silent">
-            </meta-data>
+                android:value="ongoing,silent"></meta-data>
         </service>
-
     </application>
 
 </manifest>

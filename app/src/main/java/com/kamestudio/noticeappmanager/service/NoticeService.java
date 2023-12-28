@@ -26,6 +26,7 @@ import com.kamestudio.noticeappmanager.R;
 import com.kamestudio.noticeappmanager.Util;
 import com.kamestudio.noticeappmanager.data.DataStoreUtil;
 import com.kamestudio.noticeappmanager.enity.ItemPackage;
+import com.kamestudio.noticeappmanager.receiver.PeriodicReceiver;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -38,10 +39,9 @@ public class NoticeService extends NotificationListenerService implements Util {
     private static final String TAG = "NoticeService";
     public static String APP_PACKAGE_NAME = "com.kamestudio.noticeappmanager";
     public static String MAIN_CHANNEL = "Notice manager";
-    public static boolean IS_RUNNING = false;
+    public static String IS_RUNNING_STATE_NAME = "is_running";
     private List<ItemPackage> packageListChoosen;
     private NotificationManager manager;
-
     private String channelNameMain = "Listen notification channel";
     private String channelNameSub = "Notify channel";
 
@@ -135,7 +135,6 @@ public class NoticeService extends NotificationListenerService implements Util {
                 notification,
                 ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
         );
-        IS_RUNNING = true;
     }
 
     @Override
@@ -144,7 +143,6 @@ public class NoticeService extends NotificationListenerService implements Util {
         if (action.equals(FOREGROUND_START_ACTION)){
             String APP_PACKAGE_NAME = getApplicationContext().getString(R.string.app_package_name);
             startNotificationService(APP_PACKAGE_NAME);
-            IS_RUNNING = true;
         }
         else{
             onDestroy();
@@ -162,7 +160,7 @@ public class NoticeService extends NotificationListenerService implements Util {
             mediaPlayer.release();
             mediaPlayer = null;
         }
-        Log.d("Notify App", "onNotificationRemoved: " + notificationPackageName);
+        Log.d(TAG, "onNotificationRemoved: " + notificationPackageName);
     }
 
     private String getNotificationPackageName(StatusBarNotification sbn) {
@@ -175,10 +173,10 @@ public class NoticeService extends NotificationListenerService implements Util {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startCustomForeground();
-            Log.d("Notify App", "startMyOwnForeground: ");
+            Log.d(TAG, "startMyOwnForeground: ");
         } else {
             startForeground(FOREGROUND_CHANNEL_ID, new Notification());
-            Log.d("Notify App", "startForeground: ");
+            Log.d(TAG, "startForeground: ");
         }
     }
 
@@ -195,6 +193,7 @@ public class NoticeService extends NotificationListenerService implements Util {
 
     @Override
     public void onDestroy() {
+        Log.d(TAG, "onDestroy: ");
         if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.release();
@@ -203,7 +202,13 @@ public class NoticeService extends NotificationListenerService implements Util {
         stopForeground(true);
         stopSelf();
         EventBus.getDefault().unregister(this);
-        IS_RUNNING = false;
+
+        // reschedule service if it still running
+        if (Util.isServiceRunning(this)){
+            // call boardcast receiver for trigger restart service
+            Intent broadcastIntent = new Intent(this, PeriodicReceiver.class);
+            sendBroadcast(broadcastIntent);
+        }
         super.onDestroy();
     }
 

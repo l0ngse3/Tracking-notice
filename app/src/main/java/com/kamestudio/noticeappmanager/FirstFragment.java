@@ -1,6 +1,8 @@
 package com.kamestudio.noticeappmanager;
 
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,11 +24,8 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.ads.RequestConfiguration;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.kamestudio.noticeappmanager.adapter.PackageSetupAdapter;
 import com.kamestudio.noticeappmanager.ads.GoogleMobileAdsConsentManager;
 import com.kamestudio.noticeappmanager.data.DataStoreUtil;
@@ -39,7 +38,6 @@ import com.kamestudio.noticeappmanager.viewmodel.NotificationViewModel;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -189,7 +187,10 @@ public class FirstFragment extends Fragment implements Util{
         Log.d(TAG, "onViewCreated: DataStore " + list);
         Log.d(TAG, "onViewCreated: " + viewModel.getListMutableLiveData().getValue());
         bindingViewFunction();
-        if (!NoticeService.IS_RUNNING){
+        Boolean is_running = Boolean.parseBoolean(DataStoreUtil.
+                getInstance(getActivity()).
+                getData(NoticeService.IS_RUNNING_STATE_NAME));
+        if (is_running){
             startNoticeService();
         }
     }
@@ -206,6 +207,7 @@ public class FirstFragment extends Fragment implements Util{
                 getActivity().startService(intent);
                 EventBus.getDefault().post(new MessageEvent(NoticeService.ACTION_STOP_SERVICE));
                 Log.d(TAG, "onClick: buttonStopService ");
+                DataStoreUtil.getInstance(getActivity()).setData(NoticeService.IS_RUNNING_STATE_NAME, false+"");
             }
             catch (Exception ex){
                 Log.e(TAG, "onClick: buttonStopService" + ex);
@@ -283,6 +285,7 @@ public class FirstFragment extends Fragment implements Util{
             getActivity().startService(intent);
 //            Toast.makeText(getContext(), "Start Service 2", Toast.LENGTH_SHORT).show();
         }
+        DataStoreUtil.getInstance(getActivity()).setData(NoticeService.IS_RUNNING_STATE_NAME, true+"");
     }
 
 }

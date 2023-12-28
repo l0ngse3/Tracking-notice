@@ -2,11 +2,10 @@ package com.kamestudio.noticeappmanager.adapter;
 
 
 import android.annotation.SuppressLint;
-import android.net.Uri;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.Switch;
-import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 
 import androidx.lifecycle.ViewModelProvider;

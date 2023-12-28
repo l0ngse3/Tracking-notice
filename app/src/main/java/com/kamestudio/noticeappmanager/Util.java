@@ -11,6 +11,9 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
+import com.kamestudio.noticeappmanager.data.DataStoreUtil;
+import com.kamestudio.noticeappmanager.service.NoticeService;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -191,6 +194,12 @@ public interface Util {
      */
     public static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
+    }
+
+    public static boolean isServiceRunning(Context context) {
+        Boolean is_running = Boolean.parseBoolean(DataStoreUtil.getInstance(context)
+                .getData(NoticeService.IS_RUNNING_STATE_NAME));
+        return is_running;
     }
 }
 
