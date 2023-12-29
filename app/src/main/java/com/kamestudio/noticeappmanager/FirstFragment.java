@@ -309,14 +309,16 @@ public class FirstFragment extends Fragment implements Util{
                         TimeUnit.MINUTES)
                         .addTag(workTag)
                         .build();
+                // enqueue task
                 workManager.enqueueUniquePeriodicWork(workTag,
                         ExistingPeriodicWorkPolicy.KEEP,
                         periodicWorkRequest);
                 Log.d(TAG, "Enqueue task");
                 break;
             case WORK_DISABLE:
-                workManager.cancelAllWorkByTag(workTag);
-                Log.d(TAG, "Dequeue task");
+                // remove work
+                workManager.cancelUniqueWork(workTag);
+                Log.d(TAG, "Cancel task");
                 break;
         }
     }
