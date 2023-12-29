@@ -71,7 +71,8 @@ public class FirstFragment extends Fragment implements Util{
             Bundle savedInstanceState
     ) {
         binding = FragmentFirstBinding.inflate(inflater, container, false);
-        AD_UNIT_ID = getResources().getString(R.string.AD_UNIT_ID_TEST);
+//        AD_UNIT_ID = getResources().getString(R.string.AD_UNIT_ID_TEST);
+        AD_UNIT_ID = getResources().getString(R.string.AD_UNIT_ID);
         adsConfigSettings();
         return binding.getRoot();
     }
