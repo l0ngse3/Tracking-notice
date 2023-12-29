@@ -21,15 +21,6 @@ public class PeriodicReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d("PeriodicReceiver", "onReceive: ");
-//        if (Util.isServiceRunning(context)) {
-//            Intent intentNoticeService = new Intent(context, NoticeService.class);
-//            intentNoticeService.setAction(FOREGROUND_START_ACTION);
-//            context.getApplicationContext().startForegroundService(intentNoticeService);
-//
-//            Log.d("PeriodicReceiver", "Starting service ");
-//        } else {
-//            Log.d("PeriodicReceiver", "Service disabled");
-//        }
 
         Intent intentNoticeService = new Intent(context, NoticeService.class);
         intentNoticeService.setAction(FOREGROUND_START_ACTION);
