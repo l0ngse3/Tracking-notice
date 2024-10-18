@@ -79,7 +79,7 @@ public class NoticeService extends NotificationListenerService implements Util {
         //Log.d("Notify App", notificationPackageName + ": " + sbn.getPackageName().equals(APP_PACKAGE_NAME));
         packageListChoosen = DataStoreUtil.getInstance(this).getPackages();
         Log.d(TAG, "onNotificationPosted: " + notificationPackageName);
-        if (!notificationPackageName.equals(APP_PACKAGE_NAME)) {
+        if (!notificationPackageName.equals(APP_PACKAGE_NAME) && Util.isServiceRunning(this)) {
             ItemPackage itemPackage = isPackageChoosen(notificationPackageName);
 //            ItemPackage itemPackage = new ItemPackage("", true);
 
@@ -201,11 +201,13 @@ public class NoticeService extends NotificationListenerService implements Util {
         if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.release();
+            mediaPlayer.release();
             mediaPlayer = null;
         }
+        EventBus.getDefault().unregister(this);
         stopForeground(true);
         stopSelf();
-        EventBus.getDefault().unregister(this);
+
 
 //
 //        // reschedule service if it still running
