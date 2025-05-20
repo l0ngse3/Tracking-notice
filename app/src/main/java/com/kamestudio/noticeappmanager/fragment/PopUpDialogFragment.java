@@ -1,5 +1,6 @@
 package com.kamestudio.noticeappmanager.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +23,7 @@ import com.kamestudio.noticeappmanager.viewmodel.NotificationViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PopUpDialogFragment extends DialogFragment implements Util {
     private static final String TAG = "PopUpDialogFragment";
@@ -121,7 +123,7 @@ public class PopUpDialogFragment extends DialogFragment implements Util {
         binding = FragmentPopupBinding.inflate(inflater, container, false);
 
         List<ItemPackage> choosenPackage = viewModel.getListMutableLiveData().getValue();
-        List<PackageInfo> packageInfoList = getContext().getPackageManager().getInstalledPackages(0);
+        @SuppressLint("QueryPermissionsNeeded") List<PackageInfo> packageInfoList = requireContext().getPackageManager().getInstalledPackages(0);
 
         for (PackageInfo item : packageInfoList) {
             boolean isChoosen = false;

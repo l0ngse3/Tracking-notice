@@ -2,10 +2,30 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <queries>
+        <package android:name="com.instagram.android" />
+        <package android:name="com.whatsapp" />
+        <package android:name="com.taobao.taobao" />
+        <package android:name="com.tiktokshop.seller" />
+        <package android:name="us.zoom.videomeetings" />
+        <package android:name="org.telegram.messenger" />
+        <package android:name="com.instagram.barcelona" />
+        <package android:name="com.facebook.orca" />
+        <package android:name="com.discord" />
+        <package android:name="com.facebook.katana" />
+        <package android:name="com.google.android.youtube" />
+        <package android:name="com.zhiliaoapp.musically" />
+        <package android:name="com.binance.dev" />
+        <package android:name="com.zing.zalo" />
+        <package android:name="com.Slack" />
+        <package android:name="com.microsoft.teams" />
+    </queries>
+
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission android:name="android.permission.GET_INSTALLED_APPS"/>
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />

@@ -17,7 +17,7 @@ output.json
 
 # IntelliJ
 *.iml
-.idea/
+.idea/*
 misc.xml
 deploymentTargetDropDown.xml
 render.experimental.xml
@@ -34,5 +34,6 @@ google-services.json
 
 #git cache
 **/.DS_Store
+*/.DS_Store
 .DS_Store
 
