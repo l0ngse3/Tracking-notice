@@ -31,3 +31,8 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+#git cache
+**/.DS_Store
+.DS_Store
+
